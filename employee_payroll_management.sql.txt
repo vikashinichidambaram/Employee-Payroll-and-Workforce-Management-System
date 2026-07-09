@@ -1,0 +1,528 @@
+create database project;
+use project;
+
+create table department(
+dept_id int auto_increment primary key,
+dept_name varchar(50),
+location varchar(50));
+
+INSERT INTO department VALUES
+(1,'Human Resource','Bangalore'),
+(2,'Administration','Hyderabad'),
+(3,'Sales','Chennai'),
+(4,'Customer Support','Coimbatore'),
+(5,'Information Technology','Coimbatore');
+
+create table employees(
+dept_id int,
+emp_id int auto_increment primary key,
+emp_name varchar(50),
+email varchar(50),
+phone varchar(15),
+gender varchar(50),
+hire_date date,
+job_title varchar(50),
+emp_status varchar(50),
+foreign key(dept_id) REFERENCES department(dept_id));
+
+insert into employees(emp_id,dept_id,emp_name,email,phone,gender,hire_date,job_title,emp_status) values
+(101,1,"arun","arun@gmail.com","9876512345","male","2026-01-05","HR Executive","Active"),
+(102,2,"ajith","ajith@gmail.com","3456789027","male","2026-01-12","Admin Executive","Active"),
+(103,3,"barath","barath@gmail.com","6734510065","male","2026-02-27","Sales Executive","Active"),
+(104,4,"sri","srivika@gmail.com","8078711456","female","2026-04-01","Support Executive","Active"),
+(105,5,"jaya","jayasuruthi@gmail.com","6374485856","female","2026-05-15","Software Developer","Active");
+
+create table payroll(
+payroll_id int auto_increment primary key,
+emp_id int,
+basic_salary int,
+bonus int,
+deduction int,
+tax int,
+pay_month varchar(50),
+payment_date date,
+foreign key(emp_id) REFERENCES employees(emp_id));
+
+insert into payroll(payroll_id,emp_id,basic_salary,bonus,deduction,tax,pay_month,payment_date) values
+(1001,101,40000,2000,1500,1000,'january 2026','2026-02-05'),
+(1002,102,45000,2000,1800,1500,'january 2026','2026-02-12'),
+(1003,103,25000,2000,1000,800,'february 2026','2026-03-27'),
+(1004,104,50000,5000,2000,1900,'april 2026','2026-05-01'),
+(1005,105,20000,2500,1000,800,'may 2026','2026-06-15');
+
+
+create table attendance(
+attendance_id int auto_increment primary key,
+emp_id int,
+attendance_date date,
+attendance_status varchar(50),
+foreign key(emp_id) REFERENCES employees(emp_id));
+
+insert into attendance (emp_id,attendance_date,attendance_status) values
+(101,'2026-01-05',"present"),(102,'2026-01-12',"present"),(103,'2026-02-27',"present"),(104,'2026-04-01',"present"),(105,'2026-05-15',"present"),
+(101,'2026-01-06',"present"),(102,'2026-01-13',"present"),(103,'2026-02-28',"present"),(104,'2026-04-02',"present"),(105,'2026-05-16',"absent"),
+(101,'2026-01-07',"present"),(102,'2026-01-14',"absent"),(103,'2026-03-01',"absent"),(104,'2026-04-03',"present"),(105,'2026-05-17',"present"),
+(101,'2026-01-08',"present"),(102,'2026-01-15',"present"),(103,'2026-03-02',"present"),(104,'2026-04-05',"WFH"),(105,'2026-05-18',"present"),
+(101,'2026-01-09',"WFH"),(102,'2026-01-16',"present"),(103,'2026-03-03',"present"),(104,'2026-04-06',"present"),(105,'2026-05-19',"present");
+
+
+create table leave_request(
+leave_id int auto_increment primary key,
+emp_id int,
+leave_type varchar(50),
+reason varchar(50),
+start_date date,
+end_date date,
+leave_status varchar(50),
+foreign key (emp_id) REFERENCES employees(emp_id));
+
+
+insert into leave_request(emp_id,leave_type,reason,start_date,end_date,leave_status) values
+(101,"sick","stomach pain",'2026-01-09','2026-01-09',"Approved");
+insert into leave_request(emp_id,leave_type,reason,start_date,end_date,leave_status) values
+(102,"sick","Severe fever and flu",'2026-01-14','2026-01-14',"Approved");
+insert into leave_request(emp_id,leave_type,reason,start_date,end_date,leave_status) values
+(103,"personal","attending sister marriage",'2026-03-01','2026-03-01',"Approved");
+insert into leave_request(emp_id,leave_type,reason,start_date,end_date,leave_status) values
+(104,"sick","stomach pain",'2026-04-05','2026-04-05',"Approved");
+insert into leave_request(emp_id,leave_type,reason,start_date,end_date,leave_status) values
+(105,"Personal","Attending sister marriage",'2026-05-16','2026-05-16',"Approved");
+
+create table project(
+project_id int auto_increment primary key,
+project_title varchar(150),
+project_description varchar(350),
+start_date date,
+end_date date,
+project_status varchar(50));
+
+insert into project(project_id,project_title,project_description,start_date,end_date,project_status) values
+(1111,"Student Attendance Tracker","This automated system replaces manual roll call by using biometrics, RFID, or facial recognition to log daily student attendance instantly.
+It generates real-time reports, tracks absenteeism trends,and automatically sends SMS updates to parents, improving school efficiency and accuracy.",
+'2026-07-14','2026-08-05',"Not Started");
+insert into project(project_id,project_title,project_description,project_status) values
+(1112,"Inventory Management System","This digital platform automates inventory tracking by monitoring stock levels, sales, and deliveries in real time using barcode or
+ RFID technology. It minimizes human error, prevents overstocking or stockouts, and generates instant reports to streamline supply chain operations",
+ "Not Started");
+ insert into project(project_id,project_title,project_description,start_date,end_date,project_status) values
+(1113,"Smart City Management System","This IoT-driven platform integrates urban infrastructure data to optimize public services like traffic flow, waste collection, and
+ energy consumption in real time. It utilizes smart sensors and analytics dashboards to enhance city efficiency, reduce environmental impact, and improve citizen safety",
+ '2026-05-20','2026-06-30',"Completed");
+ insert into project(project_id,project_title,project_description,start_date,end_date,project_status) values
+(1114,"Cyber Security & Network DefensePhishing Detection System","This AI-powered tool analyzes emails, links, and domain origins in real time to identify and block
+ fraudulent phishing attempts. It alerts users to malicious content, preventing credential theft and securing corporate networks from unauthorized data breaches.",
+'2026-09-01','2026-10-30',"On Hold");
+insert into project(project_id,project_title,project_description,start_date,end_date,project_status) values
+(1115,"Healthcare & TelemedicineRemote Patient Monitoring System","This platform integrates wearable health sensors to track vital signs like heart rate and oxygen
+ levels from home. It automatically alerts doctors if a patient's data crosses critical thresholds, ensuring timely medical intervention without hospital readmissions.",
+ '2026-07-01','2026-08-01',"Cancelled");
+ 
+ CREATE TABLE employee_project(
+    project_id INT,
+    emp_id INT,
+    assigned_date DATE,
+    project_role VARCHAR(50),
+    PRIMARY KEY (project_id, emp_id),
+    FOREIGN KEY (project_id) REFERENCES project(project_id),
+    FOREIGN KEY (emp_id) REFERENCES employees(emp_id)
+);
+
+insert into employee_project(project_id,emp_id,assigned_date,project_role) values(1111,101,'2026-08-05'," Full Stack Developer ");
+insert into employee_project(project_id,emp_id,project_role) values(1112,102,"Sales Coordinator");
+insert into employee_project(project_id,emp_id,assigned_date,project_role) values(1113,103,'2026-06-30',"Project Manager");
+insert into employee_project(project_id,emp_id,assigned_date,project_role) values(1114,104,'2026-10-30',"Security Engineer");
+insert into employee_project(project_id,emp_id,assigned_date,project_role) values(1115,105,'2026-08-01',"Admin Coordinator");
+
+select * from department;
+select * from employees;
+select * from payroll;
+select * from attendance;
+select * from leave_request;
+select * from project;
+select * from employee_project;
+
+
+-- (WHERE + ORDER BY)
+
+-- Display all active employees.
+select * from employees where emp_status="Active";
+-- Display all female employees.
+select * from employees where gender="female" ;
+-- Display employees hired after 2026-03-01.
+select * from employees where hire_date > '2026-03-01';
+-- Display employees working in the IT department.
+select * from department where dept_name="Information Technology";
+-- Display employees ordered by hire date.
+select * from employees order by hire_date asc;
+-- Display salaries in descending order.
+select * from payroll order by basic_salary desc;
+
+
+-- (Aggregate Functions)
+
+-- How many employees are there in the company?
+select count(*) from employees;
+-- What is the total basic salary paid by the company?
+select sum(basic_salary) from payroll ;
+-- What is the average basic salary?
+select avg(basic_salary) from payroll;
+-- What is the highest salary?
+select max(basic_salary) from payroll;
+-- What is the lowest salary?
+select min(basic_salary) from payroll;
+
+-- GROUP BY
+
+-- How many employees are there in each department?
+ select d.dept_name,
+count(e.emp_id) as no_of_employees
+from department d
+join employees e
+on d.dept_id = e.dept_id
+group by d.dept_name;
+
+-- How many employees are there in each gender category?
+select gender,count(gender)
+ from employees
+ group by  gender;
+
+-- What is the total salary paid to employees in each department?
+select d.dept_name,
+sum(p.basic_salary) as total_salary
+ from payroll as p
+ join employees as e
+ on p.emp_id = e.emp_id
+ join department as d
+ on e.dept_id=d.dept_id
+ group by  d.dept_name;
+
+
+-- What is the average salary in each department?
+select  emp_id,avg(basic_salary) as average_salary
+ from payroll
+ join department
+ group by emp_id;
+
+
+-- Which department has the highest total salary?
+select max(basic_salary) as  highest_salary,dept_name
+from payroll as p
+join employees as e
+on p.emp_id=e.emp_id
+join department as d
+on e.dept_id=d.dept_id
+group by dept_name 
+order by highest_salary desc
+limit 1 ;
+
+-- JOINS
+
+-- . Display employee name and department name
+select d.dept_name,e.emp_name
+from department as d
+left join employees as e
+on d.dept_id=e.dept_id;
+
+-- Display employee name and salary
+select e.emp_name,p.basic_salary
+from employees as e
+left join payroll as p
+on e.emp_id=p.emp_id;
+
+-- Display employee name, department name and salary
+select e.emp_name,p.basic_salary,d.dept_name
+from department as d
+left join employees as e
+on d.dept_id=e.dept_id
+left join payroll as p
+on e.emp_id = p.emp_id;
+
+-- Display employee name and project title
+select e.emp_name,p.project_title
+from employees as e
+left join employee_project as ep
+on e.emp_id=ep.emp_id
+left join project as p
+on p.project_id=ep.project_id;
+
+-- Display employee name, department name, project title and role
+select d.dept_name,e.emp_name,p.project_title,ep.project_role
+from department as d
+left join employees as e
+on d.dept_id=e.dept_id
+left join employee_project as ep
+on e.emp_id=ep.emp_id
+left join project as p
+on ep.project_id=p.project_id;
+
+-- HAVING 
+-- Show departments having more than 1 employee
+select * from employees;
+select * from department;
+select count(*)as emp_count
+from department as d
+left join employees AS e
+on d.dept_id=e.dept_id
+group by dept_name
+having 1_emp > 1;
+
+-- Show departments whose total salary is greater than 40000
+select max(p.basic_salary) AS total_salary,d.dept_name  
+from payroll as p
+left join employees as e
+on p.emp_id=e.emp_id
+left join department as d
+on e.dept_id=d.dept_id
+group by dept_name
+having total_salary > 40000 
+order by total_salary desc
+ limit 1 ;
+
+-- Show departments whose average salary is greater than 30000
+select avg(p.basic_salary) AS average_salary,d.dept_name  
+from payroll as p
+left join employees as e
+on p.emp_id=e.emp_id
+left join department as d
+on e.dept_id=d.dept_id
+group by dept_name
+having average_salary > 30000 
+order by average_salary desc;
+
+-- SUBQUERIES (EXISTS, ANY, ALL, IN)
+-- Find the employee with the highest salary.
+select a.basic_salary ,e.emp_name
+from payroll as a
+left join employees as e
+on a.emp_id = e.emp_id
+where a.basic_salary =(
+select max(basic_salary) as highest_salary
+ from payroll
+ limit 1
+ );
+
+-- Find the employee with the lowest salary.
+select p.basic_salary,e.emp_name
+from payroll as p
+left join employees as e
+on p.emp_id = e.emp_id
+where p.basic_salary=(
+select min(basic_salary) as minimum_salary
+from payroll
+);
+
+-- Find employees earning above average salary.
+select e.emp_name, p.basic_salary
+from payroll as p
+left join employees as e
+on p.emp_id = e.emp_id
+where p.basic_salary >(
+select avg(basic_salary) as average_salary
+from payroll
+);
+
+
+-- Find employees earning below average salary.
+select e.emp_name, p.basic_salary
+from payroll as p
+left join employees as e
+on p.emp_id = e.emp_id
+where basic_salary <(
+select avg(basic_salary) as lowest_salary
+from payroll);
+
+-- ADVANCE SUBQUERIES
+-- Find the department of the highest-paid employee.
+select e.emp_name, d.dept_name,p.basic_salary
+from department as d
+left join employees as e
+on d.dept_id = e.dept_id
+left join payroll as p
+on e.emp_id = p.emp_id
+where basic_salary >= 
+(
+select max(basic_salary) as highest_salary
+from payroll
+);
+
+-- Find the employee(s) with the second highest salary
+
+select a.basic_salary ,e.emp_name
+from payroll as a
+left join employees as e
+on a.emp_id = e.emp_id
+where a.basic_salary =
+   (
+select max(basic_salary) 
+ from payroll
+ where basic_salary <
+ (
+ select  max(basic_salary)
+ from payroll
+ )
+ );
+ 
+ -- Find employees who earn more than Arun
+select e.emp_name,p.basic_salary
+from employees as e
+ join payroll as p
+on e.emp_id = p.emp_id
+where p.basic_salary >
+ (
+select p.basic_salary
+from payroll as p
+ join employees as e
+on p.emp_id = e.emp_id
+where e.emp_name="arun"
+);
+ 
+ 
+ -- VIEWS
+ -- Create a View to display Employee Name and Salary Details.
+ create view employees_name_and_salary_details as
+ select e.emp_name,p.basic_salary
+ from employees as e
+ join payroll as p
+ on e.emp_id = p.emp_id;
+ 
+ select * from employees_name_and_salary_details;
+ 
+ -- Create a View to display Employee Project Details.
+ create view employee_project_details as
+ select e.emp_id,p.project_description,p.project_title,p.start_date,p.end_date,p.project_status
+from employees as e
+join employee_project as ep
+on e.emp_id = ep.emp_id
+join project as p
+on ep.project_id = p.project_id;
+
+select * from employee_project_details;
+
+-- INDEXES
+-- Create an index on the email column of the employees table.
+create index idx_employee_email
+on employees(email);
+show index from employees;
+
+-- Create an index on the emp_id column of the payroll table
+create index idx_payroll
+on payroll(emp_id);
+show index from payroll;
+
+-- . Display all indexes available in the employees table
+show indexes from employees;
+
+-- Drop the index created on the email column.
+drop index idx_employee_email
+on employees;
+show index from employees;
+
+
+-- Which column should be indexed if HR frequently searches employees by email?
+create index idx_employee_email
+on employees(email);
+show index from employees;
+
+
+-- Which column should be indexed if salary details are frequently retrieved using employee ID?
+create index idx_payroll_empid
+on payroll(emp_id);
+show index from payroll;
+
+
+-- Create an index for faster department-based employee searches.
+-- Hint:employees → dept_id
+create index idx_employee_dept
+on employees(dept_id);
+show index from employees;
+
+-- Create an index for faster project assignment searches.
+-- Hint: employee_project → emp_id or employee_project → project_id
+create index idx_employee_project_emp
+on employee_project(emp_id);
+show index from employee_project;
+
+-- PROJECT REPORTS
+-- Employee Directory Report
+-- Shows all employee details along with department information.
+select * from department e
+join employees d
+on e.dept_id = d.dept_id;
+
+-- Department-wise Employee Count Report
+select count(e.emp_id) as total,d.dept_name 
+from department as d
+join employees as e
+on d.dept_id = e.dept_id
+group by dept_name;
+
+-- Department-wise Salary Report
+select e.emp_name,d.dept_name,p.basic_salary
+from department as d
+join employees as e
+on e.dept_id = d.dept_id
+join payroll as p
+on e.emp_id = p.emp_id;
+
+-- Highest Paid Employee Report
+select e.emp_name,p.basic_salary
+from employees e
+join payroll p
+on e.emp_id=p.emp_id
+where p.basic_salary=
+(
+select max(basic_salary)
+from payroll
+);
+
+-- Employees above average salary report
+select e.emp_name,p.basic_salary
+from employees e
+join payroll p
+on e.emp_id=p.emp_id
+where p.basic_salary >
+(
+select avg(basic_salary)
+from payroll
+);
+
+-- Attendance summary report
+select attendance_status,
+count(*) as total_records
+from attendance
+group by attendance_status;
+
+-- Leave management report
+select e.emp_name,
+l.leave_type,
+l.start_date,
+l.end_date,
+l.leave_status
+from employees e
+join leave_request l
+on e.emp_id=l.emp_id;
+
+-- Employees project assignment report
+select e.emp_name,
+p.project_title,
+ep.project_role
+from employees e
+join employee_project ep
+on e.emp_id=ep.emp_id
+join project p
+on ep.project_id=p.project_id;
+
+-- Project status report
+select project_title,
+project_status
+from project;
+
+-- Department-wise average salary report
+select d.dept_name,
+avg(p.basic_salary) as average_salary
+from department d
+join employees e
+on d.dept_id=e.dept_id
+join payroll p
+on e.emp_id=p.emp_id
+group by d.dept_name;
