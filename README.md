@@ -57,6 +57,10 @@ This project is a database-driven Employee Payroll and Workforce Management Syst
 * MySQL
 * SQL
 
-## Author
+------
 
-Vikashini
+## 👩‍💻 Author
+
+**Vikashini KC**
+🔗 https://github.com/vikashinichidambaram
+💻 https://linkedin.com/in/vikashini-k-c-37971b267
