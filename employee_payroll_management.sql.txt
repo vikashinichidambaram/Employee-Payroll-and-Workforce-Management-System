@@ -198,22 +198,21 @@ sum(p.basic_salary) as total_salary
 
 
 -- What is the average salary in each department?
-select  emp_id,avg(basic_salary) as average_salary
- from payroll
- join department
- group by emp_id;
+select d.dept_name, avg(p.basic_salary) as average_salary
+from department d
+join employees e on d.dept_id = e.dept_id
+join payroll p on e.emp_id = p.emp_id
+group by d.dept_name;
 
 
 -- Which department has the highest total salary?
-select max(basic_salary) as  highest_salary,dept_name
-from payroll as p
-join employees as e
-on p.emp_id=e.emp_id
-join department as d
-on e.dept_id=d.dept_id
-group by dept_name 
-order by highest_salary desc
-limit 1 ;
+select d.dept_name, sum(p.basic_salary) as total_salary
+from payroll p
+join employees e on p.emp_id = e.emp_id
+join department d on e.dept_id = d.dept_id
+group by d.dept_name
+order by total_salary desc
+limit 1;
 
 -- JOINS
 
@@ -257,26 +256,19 @@ on ep.project_id=p.project_id;
 
 -- HAVING 
 -- Show departments having more than 1 employee
-select * from employees;
-select * from department;
-select count(*)as emp_count
-from department as d
-left join employees AS e
-on d.dept_id=e.dept_id
-group by dept_name
-having 1_emp > 1;
+select d.dept_name, count(e.emp_id) as emp_count
+from department d
+left join employees e on d.dept_id = e.dept_id
+group by d.dept_name
+having count(e.emp_id) > 1;
 
 -- Show departments whose total salary is greater than 40000
-select max(p.basic_salary) AS total_salary,d.dept_name  
-from payroll as p
-left join employees as e
-on p.emp_id=e.emp_id
-left join department as d
-on e.dept_id=d.dept_id
-group by dept_name
-having total_salary > 40000 
-order by total_salary desc
- limit 1 ;
+select d.dept_name, sum(p.basic_salary) as total_salary
+from payroll p
+join employees e on p.emp_id = e.emp_id
+join department d on e.dept_id = d.dept_id
+group by d.dept_name
+having total_salary > 40000;
 
 -- Show departments whose average salary is greater than 30000
 select avg(p.basic_salary) AS average_salary,d.dept_name  
@@ -288,93 +280,6 @@ on e.dept_id=d.dept_id
 group by dept_name
 having average_salary > 30000 
 order by average_salary desc;
-
--- SUBQUERIES (EXISTS, ANY, ALL, IN)
--- Find the employee with the highest salary.
-select a.basic_salary ,e.emp_name
-from payroll as a
-left join employees as e
-on a.emp_id = e.emp_id
-where a.basic_salary =(
-select max(basic_salary) as highest_salary
- from payroll
- limit 1
- );
-
--- Find the employee with the lowest salary.
-select p.basic_salary,e.emp_name
-from payroll as p
-left join employees as e
-on p.emp_id = e.emp_id
-where p.basic_salary=(
-select min(basic_salary) as minimum_salary
-from payroll
-);
-
--- Find employees earning above average salary.
-select e.emp_name, p.basic_salary
-from payroll as p
-left join employees as e
-on p.emp_id = e.emp_id
-where p.basic_salary >(
-select avg(basic_salary) as average_salary
-from payroll
-);
-
-
--- Find employees earning below average salary.
-select e.emp_name, p.basic_salary
-from payroll as p
-left join employees as e
-on p.emp_id = e.emp_id
-where basic_salary <(
-select avg(basic_salary) as lowest_salary
-from payroll);
-
--- ADVANCE SUBQUERIES
--- Find the department of the highest-paid employee.
-select e.emp_name, d.dept_name,p.basic_salary
-from department as d
-left join employees as e
-on d.dept_id = e.dept_id
-left join payroll as p
-on e.emp_id = p.emp_id
-where basic_salary >= 
-(
-select max(basic_salary) as highest_salary
-from payroll
-);
-
--- Find the employee(s) with the second highest salary
-
-select a.basic_salary ,e.emp_name
-from payroll as a
-left join employees as e
-on a.emp_id = e.emp_id
-where a.basic_salary =
-   (
-select max(basic_salary) 
- from payroll
- where basic_salary <
- (
- select  max(basic_salary)
- from payroll
- )
- );
- 
- -- Find employees who earn more than Arun
-select e.emp_name,p.basic_salary
-from employees as e
- join payroll as p
-on e.emp_id = p.emp_id
-where p.basic_salary >
- (
-select p.basic_salary
-from payroll as p
- join employees as e
-on p.emp_id = e.emp_id
-where e.emp_name="arun"
-);
  
  
  -- VIEWS
@@ -465,26 +370,12 @@ join payroll as p
 on e.emp_id = p.emp_id;
 
 -- Highest Paid Employee Report
-select e.emp_name,p.basic_salary
+select e.emp_name, p.basic_salary
 from employees e
-join payroll p
-on e.emp_id=p.emp_id
-where p.basic_salary=
-(
-select max(basic_salary)
-from payroll
-);
+join payroll p on e.emp_id = p.emp_id
+order by p.basic_salary desc
+limit 1;
 
--- Employees above average salary report
-select e.emp_name,p.basic_salary
-from employees e
-join payroll p
-on e.emp_id=p.emp_id
-where p.basic_salary >
-(
-select avg(basic_salary)
-from payroll
-);
 
 -- Attendance summary report
 select attendance_status,
