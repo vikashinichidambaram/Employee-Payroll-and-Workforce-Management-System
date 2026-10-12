@@ -199,17 +199,21 @@ sum(p.basic_salary) as total_salary
 
 -- What is the average salary in each department?
 select d.dept_name, avg(p.basic_salary) as average_salary
-from department d
-join employees e on d.dept_id = e.dept_id
-join payroll p on e.emp_id = p.emp_id
+from payroll as p
+join employees as e
+on p.emp_id = e.emp_id
+join department as d
+on e.dept_id = d.dept_id
 group by d.dept_name;
 
 
 -- Which department has the highest total salary?
 select d.dept_name, sum(p.basic_salary) as total_salary
-from payroll p
-join employees e on p.emp_id = e.emp_id
-join department d on e.dept_id = d.dept_id
+from payroll as p
+join employees as e
+on p.emp_id = e.emp_id
+join department as d
+on e.dept_id = d.dept_id
 group by d.dept_name
 order by total_salary desc
 limit 1;
@@ -271,15 +275,15 @@ group by d.dept_name
 having total_salary > 40000;
 
 -- Show departments whose average salary is greater than 30000
-select avg(p.basic_salary) AS average_salary,d.dept_name  
+select d.dept_name, sum(p.basic_salary) as total_salary
 from payroll as p
-left join employees as e
-on p.emp_id=e.emp_id
-left join department as d
-on e.dept_id=d.dept_id
-group by dept_name
-having average_salary > 30000 
-order by average_salary desc;
+join employees as e
+on p.emp_id = e.emp_id
+join department as d
+on e.dept_id = d.dept_id
+group by d.dept_name
+having total_salary > 40000
+order by total_salary desc;
  
  
  -- VIEWS
