@@ -35,7 +35,6 @@ This project is a database-driven Employee Payroll and Workforce Management Syst
 * GROUP BY
 * HAVING
 * JOINS
-* Subqueries
 * Views
 * Indexes
 
